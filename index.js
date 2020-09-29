@@ -5,9 +5,11 @@ const app = express()
 var bodyParser = require('body-parser'); //引入body拿参的中间件模块
 
 
-
+app.engine('html',require('express-art-template'))
 app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+    extended: true
+})); // for parsing application/x-www-form-urlencoded
 app.use(morgan('tiny'))
 app.use(express.json())
 const requestLogger = (request, response, next) => {
@@ -17,59 +19,57 @@ const requestLogger = (request, response, next) => {
     console.log('Header', request.headers)
     console.log('---')
     next()
-  }
+}
 app.use(requestLogger)
 // app.use(Router)
 // const unknownEndpoint = (request, response) => {
 //     response.status(404).send({ error: 'unknown endpoint' })
 //   }
-  
+
 // app.use(unknownEndpoint)
-let persons = [
-    {
-        id: 1,
-        name: "Alie Kelais",
-        number: "090-334225"
-    }, {
-        id: 2,
-        name: "Ble Kelais",
-        number: "090-454562"
-    }, {
-        id: 3,
-        name: "Oukes Kelais",
-        number: "090-453263"
-    }, {
-        id: 4,
-        name: "Lie Kelais",
-        number: "343-223333"
-    }
-]
+const persons = [{
+    id: 1,
+    name: "Alie Kelais",
+    number: "090-334225"
+}, {
+    id: 2,
+    name: "Ble Kelais",
+    number: "090-454562"
+}, {
+    id: 3,
+    name: "Oukes Kelais",
+    number: "090-453263"
+}, {
+    id: 4,
+    name: "Lie Kelais",
+    number: "343-223333"
+}]
 
-// app.get('/', (req,res) => {
-//     res.render('clienttest.html')
-// } )
+app.get('/', (req,res) => {
+    res.render('clienttest.html')
+} )
 
-app.get('/api/persons',(req,res) => {
+app.get('/api/persons', (req, res) => {
     res.json(persons)
 })
 
-app.get('/info', (req,res) => {
+app.get('/info', (req, res) => {
     const now = new Date()
     res.send(`<p>Phonebook has info for ${persons.length} people <br/>
     ${now}</p>`)
 })
 
-app.get('/api/persons/:id', (req,res) => {
+app.get('/api/persons/:id', (req, res) => {
     const id = req.params.id * 1
     const person = persons.find((person) => id == person.id)
-    if(person) {
+    if (person) {
         res.json(person)
     } else {
         res.status(404).end()
     }
 })
 
-app.delete('api/persons/:id', (req,res) => {
+app.delete('api/persons/:id', (req, res) => {
     const id = req.params.id * 1
     // persons.splice(id,1)
     persons = persons.filter(person => person.id !== id)
@@ -81,9 +81,9 @@ const generateId = function () {
     return maxId + 1
 }
 
-app.post('api/persons', (req,res) => {
+app.post('api/persons', (req, res) => {
     const body = req.body
-    if(!body.name || !body.number) {
+    if (!body.name || !body.number) {
         return res.status(400).json({
             error: 'name or number is not found'
         })
@@ -104,7 +104,7 @@ app.post('api/persons', (req,res) => {
 
     persons.concat(person)
     res.json(person)
-    
+
 })
 
 const PORT = 3001
