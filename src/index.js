@@ -1,13 +1,20 @@
+/*
+ * @Author: your name
+ * @Date: 2021-04-22 09:37:15
+ * @LastEditTime: 2021-04-23 09:55:09
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \react\part1\src\index.js
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <App />,
   document.getElementById('root')
 );
 
