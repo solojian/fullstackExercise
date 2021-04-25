@@ -1,26 +1,49 @@
 /*
  * @Author: your name
  * @Date: 2021-04-22 09:37:15
- * @LastEditTime: 2021-04-23 16:45:19
+ * @LastEditTime: 2021-04-25 10:50:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \react\part1\src\App.js
  */
 import './App.css';
-import React, { useState } from 'react'
+import React, { useState,useEffect  } from 'react'
 import Note from './components/Note'
+import axios from 'axios' 
 
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notes)
+const App = () => {
+  const [notes, setNotes] = useState([])
 
-  const [newNote, setNewNote] = useState(
-    'a new note...'
-  ) 
+  const [newNote, setNewNote] = useState('') 
   const [showAll, setShowAll] = useState(true)
 
   const notesToShow = showAll
   ? notes
   : notes.filter(note => note.important)
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/notes')
+      .then(response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }, [])
+
+  // useEffect(() => {
+  //   console.log('effect')
+  
+  //   const eventHandler = response => {
+  //     console.log('promise fulfilled')
+  //     setNotes(response.data)
+  //   }
+  
+  //   const promise = axios.get('http://localhost:3001/notes')
+  //   promise.then(eventHandler)
+  // }, [])
+  
+  console.log('render', notes.length, 'notes')
   
   const handleNoteChange = (event) => {
     console.log(event.target.value)
